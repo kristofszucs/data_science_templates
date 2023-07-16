@@ -3,7 +3,44 @@ from sklearn.metrics import classification_report
 import plotly.express as px
 import numpy as np
         
-        
+
+def show_histogram(df, x, bins = None, decimals = '.1f', log_y = False, uni_color = '#00b3ff', width = 500):
+    """
+    Displays a histogram using the Plotly library.
+
+    Parameters:
+    - df (pandas.DataFrame): The DataFrame containing the data.
+    - x (str): The column name from the DataFrame to plot the histogram.
+    - bins (int or None, optional): The number of bins to use in the histogram. If None, an automatic bin calculation is used. Default is None.
+    - decimals (str, optional): The format string for displaying the bin counts as text. Default is '.1f'.
+    - log_y (bool, optional): Whether to use a logarithmic scale on the y-axis. Default is False.
+    - uni_color (str, optional): The color code for the histogram bars. Default is '#00b3ff'.
+    - width (int, optional): The width of the histogram plot in pixels. Default is 500.
+
+    Returns:
+    - None: This function does not return any value but prints the graph.
+
+    Dependencies:
+    - pandas
+    - plotly.express (imported as px)
+    """
+    fig = px.histogram(df, 
+                        x=x,
+                        text_auto = decimals,
+                        nbins = bins,
+                        log_y = log_y,
+                        color_discrete_sequence = [uni_color],
+                        width=width,
+                        height=400)
+    fig.update_xaxes(title=x)
+    fig.update_yaxes(title='Count')
+    fig.update_traces(textposition='outside')
+    fig.update_layout(plot_bgcolor='rgba(0, 0, 0, 0)',paper_bgcolor='rgba(0, 0, 0, 0)', margin=dict(l=50, r=50, t=50, b=50))
+    fig.show()
+#show_histogram(df, x="Sex")
+#show_histogram(df, x="Age", bins=30, decimals = '.2f', log_y = False, uni_color = 'Blue', width = 700)
+
+   
 def show_confusion_matrix(model, y_test,y_pred, normalize_matrix):
     """
     Displays the confusion matrix and classification report for a given model's predictions.
