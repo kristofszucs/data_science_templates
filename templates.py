@@ -41,7 +41,7 @@ def show_histogram(df, x, bins = None, decimals = '.1f', log_y = False, uni_colo
 #show_histogram(df, x="Age", bins=30, decimals = '.2f', log_y = False, uni_color = 'Blue', width = 700)
 
    
-def show_confusion_matrix(model, y_test,y_pred, normalize_matrix):
+def show_model_evaluation(model, y_test,y_pred, normalize_matrix):
     """
     Displays the confusion matrix and classification report for a given model's predictions.
 
@@ -86,4 +86,4 @@ def show_confusion_matrix(model, y_test,y_pred, normalize_matrix):
     print(classification_report(y_test, y_pred))
 
 # Example (clf_rf needs to be trained and y_pred predicted)
-#show_confusion_matrix(clf_rf, y_test, y_pred, normalize_matrix = 'no')
+#show_model_evaluation(clf_rf, y_test, y_pred, normalize_matrix = 'no')
