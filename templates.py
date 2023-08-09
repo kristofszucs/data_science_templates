@@ -3,6 +3,7 @@ from sklearn.metrics import classification_report
 import plotly.express as px
 import pandas as pd
 import numpy as np
+import missingno as msno
 
 # Set the display format for decimal places
 pd.set_option('display.float_format', '{:.2f}'.format)
@@ -95,23 +96,31 @@ def show_model_evaluation(model, y_test,y_pred, normalize_matrix):
 # Example (clf_rf needs to be trained and y_pred predicted)
 #show_model_evaluation(clf_rf, y_test, y_pred, normalize_matrix = 'no')
 
-
-def check_missing_values(df):
+def check_missing_values(df, matrix = None, bar = None):
     """
-    Analyzes a DataFrame for missing values and displays a styled version of it.
+    Analyzes a DataFrame for missing values and displays a styled summary.
 
     This function calculates the count and percentage of missing values for each column in the given DataFrame.
-    The summary is styled to highlight cells with a percentage of missing values greater than 10%.
+    It then creates a summary DataFrame containing the column name, the count of missing values, and the percentage
+    of missing values. The summary is styled to highlight columns with a percentage of missing values greater than 10%.
+
+    Additionally, this function provides the option to visualize missing data using the missingno library's matrix and bar plots.
 
     Parameters:
     df (pandas.DataFrame): The input DataFrame to be analyzed.
+    matrix (str, optional): If set to 'Yes', displays the missingno matrix plot.
+    bar (str, optional): If set to 'Yes', displays the missingno bar plot.
 
     Returns:
-    A styled dataframe having the count and % of missing values for each column of the input dataframe.
+    pandas.io.formats.style.Styler: A styled summary of missing values highlighting columns with high percentages.
     """
     print("The size of the dataset is : " + str(df.shape))
     d = pd.DataFrame(df.isna().sum(), columns=['nb_NA'])
     d['pct_NA'] = (d.nb_NA/df.shape[0])*100
+    if matrix == 'Yes':
+        print(msno.matrix(df))
+    if bar == 'Yes':
+        print(msno.bar(df))
     return d.style.applymap(lambda x: 'background-color: yellow' if x > 10 else '', subset=pd.IndexSlice[:, 'pct_NA'])
 
-#check_missing_values(df) 
+#check_missing_values(df, matrix = 'Yes', bar = 'No') 
