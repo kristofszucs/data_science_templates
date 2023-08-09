@@ -1,7 +1,14 @@
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 import plotly.express as px
+import pandas as pd
 import numpy as np
+
+# Set the display format for decimal places
+pd.set_option('display.float_format', '{:.2f}'.format)
+
+import warnings
+warnings.filterwarnings('ignore')
         
 
 def show_histogram(df, x, bins = None, decimals = '.1f', log_y = False, uni_color = '#00b3ff', width = 500):
@@ -87,3 +94,24 @@ def show_model_evaluation(model, y_test,y_pred, normalize_matrix):
 
 # Example (clf_rf needs to be trained and y_pred predicted)
 #show_model_evaluation(clf_rf, y_test, y_pred, normalize_matrix = 'no')
+
+
+def check_missing_values(df):
+    """
+    Analyzes a DataFrame for missing values and displays a styled version of it.
+
+    This function calculates the count and percentage of missing values for each column in the given DataFrame.
+    The summary is styled to highlight cells with a percentage of missing values greater than 10%.
+
+    Parameters:
+    df (pandas.DataFrame): The input DataFrame to be analyzed.
+
+    Returns:
+    A styled dataframe having the count and % of missing values for each column of the input dataframe.
+    """
+    print("The size of the dataset is : " + str(df.shape))
+    d = pd.DataFrame(df.isna().sum(), columns=['nb_NA'])
+    d['pct_NA'] = (d.nb_NA/df.shape[0])*100
+    return d.style.applymap(lambda x: 'background-color: yellow' if x > 10 else '', subset=pd.IndexSlice[:, 'pct_NA'])
+
+#check_missing_values(df) 
